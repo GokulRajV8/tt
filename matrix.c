@@ -52,7 +52,22 @@ int matx_sub(Matrix* min1, Matrix* min2, Matrix* mout) {
     return 0;
 }
 
-int matx_prod(Matrix* min1, Matrix* min2, Matrix* mout) {
+int matx_vect_prod(Matrix* min, Vector* vin, Vector* vout) {
+    // checking dimensions
+    if (min->columns != vin->rows || min->rows != vout->rows) return -1;
+
+    float val;
+    for (int rid = 0; rid < min->rows; ++rid) {
+        val = 0.0f;
+        for (int i = 0; i < min->columns; ++i)
+            val += *(min->values + min->columns * rid + i) * *(vin->values + i);
+        *(vout->values + rid) = val;
+    }
+
+    return 0;
+}
+
+int matx_matx_prod(Matrix* min1, Matrix* min2, Matrix* mout) {
     // checking input dimensions
     if (min1->columns != min2->rows) return -1;
 

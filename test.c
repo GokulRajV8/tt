@@ -29,7 +29,7 @@ void test1() {
         fprintf(stdout, "Subtraction failed");
     }
 
-    result = matx_prod(&m1, &m2, &m3);
+    result = matx_matx_prod(&m1, &m2, &m3);
     if (result == 0) {
         fprintf(stdout, "Multiplication result");
         matx_print(&m3);
@@ -83,7 +83,7 @@ void test2() {
 
     Vector v4 = vect_init_bare(2);
 
-    result = vect_matx_prod(&m, &v1, &v4);
+    result = matx_vect_prod(&m, &v1, &v4);
     if (result == 0) {
         fprintf(stdout, "Multiplication result");
         vect_print(&v4);

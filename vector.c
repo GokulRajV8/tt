@@ -46,21 +46,6 @@ int vect_vect_prod(Vector* vin1, Vector* vin2, float* out) {
     return 0;
 }
 
-int vect_matx_prod(Matrix* min, Vector* vin, Vector* vout) {
-    // checking dimensions
-    if (min->columns != vin->rows || min->rows != vout->rows) return -1;
-
-    float val;
-    for (int rid = 0; rid < min->rows; ++rid) {
-        val = 0.0f;
-        for (int i = 0; i < min->columns; ++i)
-            val += *(min->values + min->columns * rid + i) * *(vin->values + i);
-        *(vout->values + rid) = val;
-    }
-
-    return 0;
-}
-
 void vect_print(Vector* v) {
     fprintf(stdout, "\nRows : %d", v->rows);
 
