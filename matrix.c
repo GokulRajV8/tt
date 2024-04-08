@@ -1,6 +1,22 @@
 #include "matrix.h"
 
-int add(Matrix* min1, Matrix* min2, Matrix* mout) {
+Matrix matx_init_bare(int rows, int columns) {
+    Matrix m;
+    m.rows = rows;
+    m.columns = columns;
+    m.values = (float*)malloc(sizeof(float) * m.rows * m.columns);
+
+    return m;
+}
+
+Matrix matx_init_data(int rows, int columns, float* data) {
+    Matrix m = matx_init_bare(rows, columns);
+    memcpy(m.values, data, sizeof(float) * m.rows * m.columns);
+
+    return m;
+}
+
+int matx_add(Matrix* min1, Matrix* min2, Matrix* mout) {
     // checking rows
     if (min1->rows != min2->rows || min1->rows != mout->rows) return -1;
 
@@ -8,17 +24,17 @@ int add(Matrix* min1, Matrix* min2, Matrix* mout) {
     if (min1->columns != min2->columns || min1->columns != mout->columns)
         return -1;
 
-    for (int row_id = 0; row_id < mout->rows; ++row_id) {
-        for (int column_id = 0; column_id < mout->columns; ++column_id)
-            *(mout->values + mout->columns * row_id + column_id) =
-                *(min1->values + min1->columns * row_id + column_id) +
-                *(min2->values + min2->columns * row_id + column_id);
+    for (int rid = 0; rid < mout->rows; ++rid) {
+        for (int cid = 0; cid < mout->columns; ++cid)
+            *(mout->values + mout->columns * rid + cid) =
+                *(min1->values + min1->columns * rid + cid) +
+                *(min2->values + min2->columns * rid + cid);
     }
 
     return 0;
 }
 
-int subtract(Matrix* min1, Matrix* min2, Matrix* mout) {
+int matx_sub(Matrix* min1, Matrix* min2, Matrix* mout) {
     // checking rows
     if (min1->rows != min2->rows || min1->rows != mout->rows) return -1;
 
@@ -26,17 +42,17 @@ int subtract(Matrix* min1, Matrix* min2, Matrix* mout) {
     if (min1->columns != min2->columns || min1->columns != mout->columns)
         return -1;
 
-    for (int row_id = 0; row_id < mout->rows; ++row_id) {
-        for (int column_id = 0; column_id < mout->columns; ++column_id)
-            *(mout->values + mout->columns * row_id + column_id) =
-                *(min1->values + min1->columns * row_id + column_id) -
-                *(min2->values + min2->columns * row_id + column_id);
+    for (int rid = 0; rid < mout->rows; ++rid) {
+        for (int cid = 0; cid < mout->columns; ++cid)
+            *(mout->values + mout->columns * rid + cid) =
+                *(min1->values + min1->columns * rid + cid) -
+                *(min2->values + min2->columns * rid + cid);
     }
 
     return 0;
 }
 
-int multiply(Matrix* min1, Matrix* min2, Matrix* mout) {
+int matx_prod(Matrix* min1, Matrix* min2, Matrix* mout) {
     // checking input dimensions
     if (min1->columns != min2->rows) return -1;
 
@@ -55,4 +71,19 @@ int multiply(Matrix* min1, Matrix* min2, Matrix* mout) {
     }
 
     return 0;
+}
+
+void matx_print(Matrix* m) {
+    fprintf(stdout, "\nRows : %d", m->rows);
+    fprintf(stdout, "\nColumns : %d", m->columns);
+
+    fprintf(stdout, "\nValues ->\n");
+    for (int rid = 0; rid < m->rows; ++rid) {
+        fprintf(stdout, "|");
+        for (int column_id = 0; column_id < m->columns; ++column_id)
+            fprintf(stdout, "%3.2f ",
+                    *(m->values + (rid * m->columns) + column_id));
+        fprintf(stdout, "|\n");
+    }
+    fprintf(stdout, "\n");
 }
