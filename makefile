@@ -10,5 +10,5 @@ test.obj:
 	cl -c test.c
 
 test: matrix.obj vector.obj test.obj
-	cl /Fe: build\test.exe matrix.obj vector.obj test.obj
+	link matrix.obj vector.obj test.obj /out:build\test.exe
 	del *.obj
