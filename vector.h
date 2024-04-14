@@ -1,25 +1,27 @@
 #ifndef VECTOR_H_
 #define VECTOR_H_
 
+#include <stdint.h>
 #include <stdio.h>
 
 /*
  * data types
  */
 
-typedef struct Vector {
+typedef struct {
     float* values;
-    int rows;
+    uint32_t rows;
 } Vector;
 
 /*
  * functions
  */
 
-Vector vect_init_bare(int rows);
-Vector vect_init_data(int rows, float* data);
+Vector vect_init_bare(uint32_t rows);
+Vector vect_init_data(uint32_t rows, float* data);
+void vect_delete(Vector* v);
 
-inline float* vect_get(Vector* v, int rid);
+inline float* vect_get(Vector* v, uint32_t rid);
 void vect_print(Vector* v, char* name);
 
 int vect_add(Vector* vin1, Vector* vin2, Vector* vout);
