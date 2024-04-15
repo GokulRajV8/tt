@@ -26,6 +26,23 @@ inline float* matx_get(Matrix* m, uint32_t rid, uint32_t cid) {
     return (m->values + (rid * m->columns) + cid);
 }
 
+void matx_resize(Matrix* m, uint32_t rows, uint32_t columns) {
+    m->rows = rows;
+    m->columns = columns;
+    m->values =
+        (float*)realloc(m->values, sizeof(float) * m->rows * m->columns);
+}
+
+void matx_copy(Matrix* msrc, Matrix* mdest) {
+    matx_delete(mdest);
+
+    mdest->rows = msrc->rows;
+    mdest->columns = msrc->columns;
+
+    memcpy(mdest->values, mdest->values,
+           sizeof(float) * msrc->rows * msrc->columns);
+}
+
 void matx_print(Matrix* m, char* name) {
     fprintf(stdout, "\n%s :\n", name);
     for (uint32_t rid = 0; rid < m->rows; ++rid) {

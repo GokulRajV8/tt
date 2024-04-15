@@ -25,6 +25,8 @@ Matrix matx_init_data(uint32_t rows, uint32_t columns, float* data);
 void matx_delete(Matrix* m);
 
 inline float* matx_get(Matrix* m, uint32_t rid, uint32_t cid);
+void matx_resize(Matrix* m, uint32_t rows, uint32_t columns);
+void matx_copy(Matrix* msrc, Matrix* mdest);
 void matx_print(Matrix* m, char* name);
 
 int matx_add(Matrix* min1, Matrix* min2, Matrix* mout);

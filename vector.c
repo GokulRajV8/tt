@@ -23,6 +23,19 @@ void vect_delete(Vector* v) { free(v->values); }
 
 inline float* vect_get(Vector* v, uint32_t rid) { return v->values + rid; }
 
+void vect_resize(Vector* v, uint32_t rows) {
+    v->rows = rows;
+    v->values = (float*)realloc(v->values, sizeof(float) * v->rows);
+}
+
+void vect_copy(Vector* vsrc, Vector* vdest) {
+    vect_delete(vdest);
+
+    vdest->rows = vsrc->rows;
+
+    memcpy(vdest->values, vsrc->values, sizeof(float) * vsrc->rows);
+}
+
 void vect_print(Vector* v, char* name) {
     fprintf(stdout, "\n%s :\n", name);
     for (uint32_t rid = 0; rid < v->rows; ++rid)
