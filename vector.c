@@ -5,7 +5,7 @@
 struct Vector vect_init_bare(uint32_t rows) {
     struct Vector v;
     v.rows = rows;
-    v.values = (float*)malloc(sizeof(float) * v.rows);
+    v.values = malloc(sizeof(float) * v.rows);
 
     return v;
 }
@@ -27,7 +27,7 @@ inline float* vect_get(struct Vector* v, uint32_t rid) {
 
 void vect_resize(struct Vector* v, uint32_t rows) {
     v->rows = rows;
-    v->values = (float*)realloc(v->values, sizeof(float) * v->rows);
+    v->values = realloc(v->values, sizeof(float) * v->rows);
 }
 
 void vect_copy(struct Vector* vsrc, struct Vector* vdest) {

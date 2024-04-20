@@ -6,7 +6,7 @@ struct Matrix matx_init_bare(uint32_t rows, uint32_t columns) {
     struct Matrix m;
     m.rows = rows;
     m.columns = columns;
-    m.values = (float*)malloc(sizeof(float) * m.rows * m.columns);
+    m.values = malloc(sizeof(float) * m.rows * m.columns);
 
     return m;
 }
@@ -29,8 +29,7 @@ inline float* matx_get(struct Matrix* m, uint32_t rid, uint32_t cid) {
 void matx_resize(struct Matrix* m, uint32_t rows, uint32_t columns) {
     m->rows = rows;
     m->columns = columns;
-    m->values =
-        (float*)realloc(m->values, sizeof(float) * m->rows * m->columns);
+    m->values = realloc(m->values, sizeof(float) * m->rows * m->columns);
 }
 
 void matx_copy(struct Matrix* msrc, struct Matrix* mdest) {

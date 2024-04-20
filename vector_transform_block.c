@@ -8,8 +8,7 @@ struct VectorTransformBlock vtb_init(uint32_t layers_count,
     struct VectorTransformBlock vtb;
 
     vtb.layers_count = layers_count;
-    vtb.layers = (struct VectorTransformLayer*)malloc(
-        sizeof(struct VectorTransformLayer) * vtb.layers_count);
+    vtb.layers = malloc(sizeof(struct VectorTransformLayer) * vtb.layers_count);
 
     for (uint32_t layer_id = 0; layer_id < vtb.layers_count; ++layer_id)
         *(vtb.layers + layer_id) =
