@@ -34,11 +34,7 @@ void matx_resize(struct Matrix* m, uint32_t rows, uint32_t columns) {
 }
 
 void matx_copy(struct Matrix* msrc, struct Matrix* mdest) {
-    matx_delete(mdest);
-
-    mdest->rows = msrc->rows;
-    mdest->columns = msrc->columns;
-
+    matx_resize(mdest, msrc->rows, msrc->columns);
     memcpy(mdest->values, mdest->values,
            sizeof(float) * msrc->rows * msrc->columns);
 }

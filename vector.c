@@ -31,10 +31,7 @@ void vect_resize(struct Vector* v, uint32_t rows) {
 }
 
 void vect_copy(struct Vector* vsrc, struct Vector* vdest) {
-    vect_delete(vdest);
-
-    vdest->rows = vsrc->rows;
-
+    vect_resize(vdest, vsrc->rows);
     memcpy(vdest->values, vsrc->values, sizeof(float) * vsrc->rows);
 }
 
