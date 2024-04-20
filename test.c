@@ -7,14 +7,14 @@ int main() {
 
     float vtl_values[8] = {0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0};
 
-    VectorTransformLayer vtl = vtl_init(3, 2, vtl_values);
+    struct VectorTransformLayer vtl = vtl_init(3, 2, vtl_values);
 
     float vin_values[3] = {1.0, 2.0, 3.0};
 
-    Vector vin = vect_init_data(3, vin_values);
+    struct Vector vin = vect_init_data(3, vin_values);
     vect_print(&vin, "vin for layer");
 
-    Vector vout = vect_init_bare(2);
+    struct Vector vout = vect_init_bare(2);
 
     result = vtl_transform(&vtl, &vin, &vout);
     if (result == 0)
@@ -31,16 +31,16 @@ int main() {
 
     float vin1_values[3] = {1.0, 2.0, 3.0};
 
-    Vector vin1 = vect_init_data(3, vin1_values);
+    struct Vector vin1 = vect_init_data(3, vin1_values);
     vect_print(&vin, "vin for block");
 
     uint32_t input_size[2] = {3, 2};
     float vtb_layer1_values[8] = {0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0};
     float vtb_layer2_values[9] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
     float* vtb_values[2] = {vtb_layer1_values, vtb_layer2_values};
-    VectorTransformBlock vtb = vtb_init(2, input_size, 3, vtb_values);
+    struct VectorTransformBlock vtb = vtb_init(2, input_size, 3, vtb_values);
 
-    Vector vout1 = vect_init_bare(3);
+    struct Vector vout1 = vect_init_bare(3);
 
     result = vtb_transform(&vtb, &vin1, &vout1);
     if (result == 0)

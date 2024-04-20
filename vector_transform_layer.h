@@ -10,20 +10,22 @@
  * data types
  */
 
-typedef struct {
-    Matrix weights;
-    Vector bias;
+struct VectorTransformLayer {
+    struct Matrix weights;
+    struct Vector bias;
     uint32_t in_size;
     uint32_t out_size;
-} VectorTransformLayer;
+};
 
 /*
  * functions
  */
 
-VectorTransformLayer vtl_init(uint32_t in_size, uint32_t out_size, float* data);
-void vtl_delete(VectorTransformLayer* vtl);
+struct VectorTransformLayer vtl_init(uint32_t in_size, uint32_t out_size,
+                                     float* data);
+void vtl_delete(struct VectorTransformLayer* vtl);
 
-int vtl_transform(VectorTransformLayer* vtl, Vector* vin, Vector* vout);
+int vtl_transform(struct VectorTransformLayer* vtl, struct Vector* vin,
+                  struct Vector* vout);
 
 #endif

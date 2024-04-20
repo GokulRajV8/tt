@@ -2,13 +2,14 @@
 
 // creation and deletion
 
-VectorTransformBlock vtb_init(uint32_t layers_count, uint32_t* layer_input_size,
-                              uint32_t output_size, float** values) {
-    VectorTransformBlock vtb;
+struct VectorTransformBlock vtb_init(uint32_t layers_count,
+                                     uint32_t* layer_input_size,
+                                     uint32_t output_size, float** values) {
+    struct VectorTransformBlock vtb;
 
     vtb.layers_count = layers_count;
-    vtb.layers = (VectorTransformLayer*)malloc(sizeof(VectorTransformLayer) *
-                                               vtb.layers_count);
+    vtb.layers = (struct VectorTransformLayer*)malloc(
+        sizeof(struct VectorTransformLayer) * vtb.layers_count);
 
     for (uint32_t layer_id = 0; layer_id < vtb.layers_count; ++layer_id)
         *(vtb.layers + layer_id) =
@@ -21,7 +22,7 @@ VectorTransformBlock vtb_init(uint32_t layers_count, uint32_t* layer_input_size,
     return vtb;
 }
 
-void vtb_delete(VectorTransformBlock* vtb) {
+void vtb_delete(struct VectorTransformBlock* vtb) {
     for (uint32_t layer_id = 0; layer_id < vtb->layers_count; ++layer_id)
         vtl_delete(vtb->layers + layer_id);
     free(vtb->layers);
@@ -29,13 +30,14 @@ void vtb_delete(VectorTransformBlock* vtb) {
 
 // operations
 
-int vtb_transform(VectorTransformBlock* vtb, Vector* vin, Vector* vout) {
+int vtb_transform(struct VectorTransformBlock* vtb, struct Vector* vin,
+                  struct Vector* vout) {
     // checking input and output dimensions
     if ((vtb->layers)->in_size != vin->rows ||
         (vtb->layers + (vtb->layers_count - 1))->out_size != vout->rows)
         return -1;
 
-    Vector v_temp = vect_init_bare(vin->rows);
+    struct Vector v_temp = vect_init_bare(vin->rows);
     vect_copy(vin, &v_temp);
     for (uint32_t layer_id = 0; layer_id < vtb->layers_count; ++layer_id) {
         vect_resize(vout, (vtb->layers + layer_id)->out_size);

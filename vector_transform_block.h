@@ -9,19 +9,21 @@
  * data types
  */
 
-typedef struct {
-    VectorTransformLayer* layers;
+struct VectorTransformBlock {
+    struct VectorTransformLayer* layers;
     uint32_t layers_count;
-} VectorTransformBlock;
+};
 
 /*
  * functions
  */
 
-VectorTransformBlock vtb_init(uint32_t layers_count, uint32_t* layer_input_size,
-                              uint32_t output_size, float** values);
-void vtb_delete(VectorTransformBlock* vtb);
+struct VectorTransformBlock vtb_init(uint32_t layers_count,
+                                     uint32_t* layer_input_size,
+                                     uint32_t output_size, float** values);
+void vtb_delete(struct VectorTransformBlock* vtb);
 
-int vtb_transform(VectorTransformBlock* vtb, Vector* vin, Vector* vout);
+int vtb_transform(struct VectorTransformBlock* vtb, struct Vector* vin,
+                  struct Vector* vout);
 
 #endif

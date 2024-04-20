@@ -2,8 +2,8 @@
 
 // creation and deletion
 
-Matrix matx_init_bare(uint32_t rows, uint32_t columns) {
-    Matrix m;
+struct Matrix matx_init_bare(uint32_t rows, uint32_t columns) {
+    struct Matrix m;
     m.rows = rows;
     m.columns = columns;
     m.values = (float*)malloc(sizeof(float) * m.rows * m.columns);
@@ -11,29 +11,29 @@ Matrix matx_init_bare(uint32_t rows, uint32_t columns) {
     return m;
 }
 
-Matrix matx_init_data(uint32_t rows, uint32_t columns, float* data) {
-    Matrix m = matx_init_bare(rows, columns);
+struct Matrix matx_init_data(uint32_t rows, uint32_t columns, float* data) {
+    struct Matrix m = matx_init_bare(rows, columns);
     memcpy(m.values, data, sizeof(float) * m.rows * m.columns);
 
     return m;
 }
 
-void matx_delete(Matrix* m) { free(m->values); }
+void matx_delete(struct Matrix* m) { free(m->values); }
 
 // methods
 
-inline float* matx_get(Matrix* m, uint32_t rid, uint32_t cid) {
+inline float* matx_get(struct Matrix* m, uint32_t rid, uint32_t cid) {
     return (m->values + (rid * m->columns) + cid);
 }
 
-void matx_resize(Matrix* m, uint32_t rows, uint32_t columns) {
+void matx_resize(struct Matrix* m, uint32_t rows, uint32_t columns) {
     m->rows = rows;
     m->columns = columns;
     m->values =
         (float*)realloc(m->values, sizeof(float) * m->rows * m->columns);
 }
 
-void matx_copy(Matrix* msrc, Matrix* mdest) {
+void matx_copy(struct Matrix* msrc, struct Matrix* mdest) {
     matx_delete(mdest);
 
     mdest->rows = msrc->rows;
@@ -43,7 +43,7 @@ void matx_copy(Matrix* msrc, Matrix* mdest) {
            sizeof(float) * msrc->rows * msrc->columns);
 }
 
-void matx_print(Matrix* m, char* name) {
+void matx_print(struct Matrix* m, char* name) {
     fprintf(stdout, "\n%s :\n", name);
     for (uint32_t rid = 0; rid < m->rows; ++rid) {
         fprintf(stdout, "|");
@@ -56,7 +56,7 @@ void matx_print(Matrix* m, char* name) {
 
 // operations
 
-int matx_add(Matrix* min1, Matrix* min2, Matrix* mout) {
+int matx_add(struct Matrix* min1, struct Matrix* min2, struct Matrix* mout) {
     // checking rows
     if (min1->rows != min2->rows || min1->rows != mout->rows) return -1;
 
@@ -72,7 +72,7 @@ int matx_add(Matrix* min1, Matrix* min2, Matrix* mout) {
     return 0;
 }
 
-int matx_sub(Matrix* min1, Matrix* min2, Matrix* mout) {
+int matx_sub(struct Matrix* min1, struct Matrix* min2, struct Matrix* mout) {
     // checking rows
     if (min1->rows != min2->rows || min1->rows != mout->rows) return -1;
 
@@ -88,7 +88,8 @@ int matx_sub(Matrix* min1, Matrix* min2, Matrix* mout) {
     return 0;
 }
 
-int matx_vect_prod(Matrix* min, Vector* vin, Vector* vout) {
+int matx_vect_prod(struct Matrix* min, struct Vector* vin,
+                   struct Vector* vout) {
     // checking dimensions
     if (min->columns != vin->rows || min->rows != vout->rows) return -1;
 
@@ -103,7 +104,8 @@ int matx_vect_prod(Matrix* min, Vector* vin, Vector* vout) {
     return 0;
 }
 
-int matx_matx_prod(Matrix* min1, Matrix* min2, Matrix* mout) {
+int matx_matx_prod(struct Matrix* min1, struct Matrix* min2,
+                   struct Matrix* mout) {
     // checking input dimensions
     if (min1->columns != min2->rows) return -1;
 

@@ -2,33 +2,35 @@
 
 // creation and deletion
 
-Vector vect_init_bare(uint32_t rows) {
-    Vector v;
+struct Vector vect_init_bare(uint32_t rows) {
+    struct Vector v;
     v.rows = rows;
     v.values = (float*)malloc(sizeof(float) * v.rows);
 
     return v;
 }
 
-Vector vect_init_data(uint32_t rows, float* data) {
-    Vector v = vect_init_bare(rows);
+struct Vector vect_init_data(uint32_t rows, float* data) {
+    struct Vector v = vect_init_bare(rows);
     memcpy(v.values, data, sizeof(float) * v.rows);
 
     return v;
 }
 
-void vect_delete(Vector* v) { free(v->values); }
+void vect_delete(struct Vector* v) { free(v->values); }
 
 // methods
 
-inline float* vect_get(Vector* v, uint32_t rid) { return v->values + rid; }
+inline float* vect_get(struct Vector* v, uint32_t rid) {
+    return v->values + rid;
+}
 
-void vect_resize(Vector* v, uint32_t rows) {
+void vect_resize(struct Vector* v, uint32_t rows) {
     v->rows = rows;
     v->values = (float*)realloc(v->values, sizeof(float) * v->rows);
 }
 
-void vect_copy(Vector* vsrc, Vector* vdest) {
+void vect_copy(struct Vector* vsrc, struct Vector* vdest) {
     vect_delete(vdest);
 
     vdest->rows = vsrc->rows;
@@ -36,7 +38,7 @@ void vect_copy(Vector* vsrc, Vector* vdest) {
     memcpy(vdest->values, vsrc->values, sizeof(float) * vsrc->rows);
 }
 
-void vect_print(Vector* v, char* name) {
+void vect_print(struct Vector* v, char* name) {
     fprintf(stdout, "\n%s :\n", name);
     for (uint32_t rid = 0; rid < v->rows; ++rid)
         fprintf(stdout, "| %9.3f |\n", *vect_get(v, rid));
@@ -45,7 +47,7 @@ void vect_print(Vector* v, char* name) {
 
 // operations
 
-int vect_add(Vector* vin1, Vector* vin2, Vector* vout) {
+int vect_add(struct Vector* vin1, struct Vector* vin2, struct Vector* vout) {
     // checking rows
     if (vin1->rows != vin2->rows || vin1->rows != vout->rows) return -1;
 
@@ -55,7 +57,7 @@ int vect_add(Vector* vin1, Vector* vin2, Vector* vout) {
     return 0;
 }
 
-int vect_sub(Vector* vin1, Vector* vin2, Vector* vout) {
+int vect_sub(struct Vector* vin1, struct Vector* vin2, struct Vector* vout) {
     // checking rows
     if (vin1->rows != vin2->rows || vin1->rows != vout->rows) return -1;
 
@@ -65,7 +67,7 @@ int vect_sub(Vector* vin1, Vector* vin2, Vector* vout) {
     return 0;
 }
 
-int vect_vect_prod(Vector* vin1, Vector* vin2, float* out) {
+int vect_vect_prod(struct Vector* vin1, struct Vector* vin2, float* out) {
     // checking rows
     if (vin1->rows != vin2->rows) return -1;
 
