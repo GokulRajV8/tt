@@ -51,5 +51,28 @@ int main() {
     vect_delete(&vin_for_vtb);
     vect_delete(&vout_for_vtb);
 
+    // -- Testing Vector transform block creator --
+
+    float vin_for_vtbc_values[3] = {1.0, 2.0, 3.0};
+    struct Vector vin_for_vtbc = vect_init_data(3, vin_for_vtbc_values);
+    vect_print(&vin_for_vtbc, "vin for block creator");
+
+    char* input_for_vtbc[2] = {"3 2\n0.0 2.0 4.0 6.0 8.0 10.0 12.0 14.0",
+                               "2 3\n1.0 3.0 5.0 7.0 9.0 11.0 13.0 15.0 17.0"};
+    struct VectorTransformBlock vtb_for_vtbc = vtb_create(2, input_for_vtbc);
+
+    struct Vector vout_for_vtbc = vect_init_bare(3);
+
+    result = vtb_transform(&vtb_for_vtbc, &vin_for_vtbc, &vout_for_vtbc);
+    if (result == 0)
+        vect_print(&vout_for_vtbc, "vtb_for_vtbc(vin)");
+    else
+        fprintf(stdout, "Transformation failed");
+
+    // deletion
+    vtb_delete(&vtb_for_vtbc);
+    vect_delete(&vin_for_vtbc);
+    vect_delete(&vout_for_vtbc);
+
     return 0;
 }
