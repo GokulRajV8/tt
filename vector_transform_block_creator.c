@@ -33,6 +33,12 @@ static char** split(char* input_str, char delimiter) {
     return output;
 }
 
+static void delete_list_of_blocks(uint32_t block_count, void** list_of_blocks) {
+    for (uint32_t block_id = 0; block_id < block_count; ++block_id)
+        free(*(list_of_blocks + block_id));
+    free(list_of_blocks);
+}
+
 struct VectorTransformBlock vtb_create(uint32_t layers_count,
                                        char** layers_data) {
     uint32_t input_size;
@@ -60,8 +66,19 @@ struct VectorTransformBlock vtb_create(uint32_t layers_count,
 
         for (uint32_t i = 0; i < (input_size + 1) * output_size; ++i)
             layer_float_data[layer_id][i] = atof(floats_str[i]);
+
+        // freeing memory
+        delete_list_of_blocks(2, dimensions_and_floats_str);
+        delete_list_of_blocks(2, dimensions_str);
+        delete_list_of_blocks((input_size + 1) * output_size, floats_str);
     }
 
-    return vtb_init(layers_count, layer_input_size, output_size,
-                    layer_float_data);
+    struct VectorTransformBlock vtb =
+        vtb_init(layers_count, layer_input_size, output_size, layer_float_data);
+
+    // freeing memory
+    free(layer_input_size);
+    delete_list_of_blocks(layers_count, layer_float_data);
+
+    return vtb;
 }

@@ -5,6 +5,10 @@
 
 #include "vector_transform_block.h"
 
+/*
+ * functions
+ */
+
 struct VectorTransformBlock vtb_create(uint32_t layers_count,
                                        char** layers_data);
 
