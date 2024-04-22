@@ -80,7 +80,36 @@ struct VTBFileData vtb_read(FILE* f) {
 
 void vtb_dump(FILE* f, struct VectorTransformBlock vtb) {}
 
-void avg_vtb_creator(FILE* f, uint32_t* input_sizes, uint32_t output_size){};
+void avg_vtb_creator(FILE* f, uint32_t layer_count, uint32_t* input_sizes,
+                     uint32_t output_size) {
+    fprintf(f, "%d", layer_count);
+
+    uint32_t layer_input, layer_output;
+    for (uint32_t layer_id = 0; layer_id < layer_count; ++layer_id) {
+        layer_input = input_sizes[layer_id];
+        if (layer_id != layer_count - 1)
+            layer_output = input_sizes[layer_id + 1];
+        else
+            layer_output = output_size;
+
+        fprintf(f, "\n\n%d %d", layer_input, layer_output);
+
+        float float_value;
+        for (uint32_t i = 0; i <= layer_output; ++i) {
+            if (i == layer_output) {
+                float_value = 0.0f;
+                fprintf(f, "\n%f", float_value);
+                for (uint32_t j = 1; j < layer_output; ++j)
+                    fprintf(f, " %f", float_value);
+            } else {
+                float_value = 1.0f / layer_input;
+                fprintf(f, "\n%f", float_value);
+                for (uint32_t j = 1; j < layer_input; ++j)
+                    fprintf(f, " %f", float_value);
+            }
+        }
+    }
+}
 
 void vtb_file_data_delete(struct VTBFileData* vtb_file_data) {
     for (uint32_t layer_id = 0; layer_id < vtb_file_data->layers_count;

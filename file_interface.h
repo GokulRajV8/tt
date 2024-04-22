@@ -21,7 +21,8 @@ struct VTBFileData {
 
 struct VTBFileData vtb_read(FILE* f);
 void vtb_dump(FILE* f, struct VectorTransformBlock vtb);
-void avg_vtb_creator(FILE* f, uint32_t* input_sizes, uint32_t output_size);
+void avg_vtb_creator(FILE* f, uint32_t layer_count, uint32_t* input_sizes,
+                     uint32_t output_size);
 void vtb_file_data_delete(struct VTBFileData* vtb_file_data);
 
 #endif

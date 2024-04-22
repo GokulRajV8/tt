@@ -4,6 +4,15 @@
 int main() {
     int result;
 
+    // creating VTB file
+    FILE* vtb_file_to_write = fopen("test\\avg_vtb1.txt", "w");
+    assert(vtb_file_to_write != NULL);
+
+    uint32_t input_sizes[5] = {12, 20, 40, 40, 20};
+    avg_vtb_creator(vtb_file_to_write, 5, input_sizes, 12);
+    fprintf(stdout, "\nVTB file created successfully");
+    fclose(vtb_file_to_write);
+
     // reading vtb file
     FILE* vtb_file = fopen("test\\avg_vtb1.txt", "r");
     assert(vtb_file != NULL);
