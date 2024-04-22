@@ -82,6 +82,7 @@ void vtb_dump(FILE* f, struct VectorTransformBlock vtb) {}
 
 void avg_vtb_creator(FILE* f, uint32_t layer_count, uint32_t* input_sizes,
                      uint32_t output_size) {
+    // number of layers
     fprintf(f, "%d", layer_count);
 
     uint32_t layer_input, layer_output;
@@ -92,8 +93,10 @@ void avg_vtb_creator(FILE* f, uint32_t layer_count, uint32_t* input_sizes,
         else
             layer_output = output_size;
 
+        // layer dimensions
         fprintf(f, "\n\n%d %d", layer_input, layer_output);
 
+        // float data
         float float_value;
         for (uint32_t i = 0; i <= layer_output; ++i) {
             if (i == layer_output) {
