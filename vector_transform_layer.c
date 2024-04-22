@@ -1,5 +1,13 @@
 #include "vector_transform_layer.h"
 
+static void vect_bound_check(struct Vector* v) {
+    for (uint32_t i = 0; i < v->rows; ++i)
+        if (v->values[i] > 1.0f)
+            v->values[i] = 1.0f;
+        else if (v->values[i] < -1.0f)
+            v->values[i] = -1.0f;
+}
+
 // creation and deletion
 
 struct VectorTransformLayer vtl_init(uint32_t in_size, uint32_t out_size,
@@ -31,6 +39,7 @@ int vtl_transform(struct VectorTransformLayer* vtl, struct Vector* vin,
     matx_vect_prod(&vtl->weights, vin, &intermediate);
     vect_add(&intermediate, &vtl->bias, vout);
     vect_delete(&intermediate);
+    vect_bound_check(vout);
 
     return 0;
 }
