@@ -51,26 +51,42 @@ struct VectorTransformBlock vtb_create(uint32_t layers_count,
 
         assert(substring_count(dimensions_and_floats_str[0], ' ') == 2);
         char** dimensions_str = split(dimensions_and_floats_str[0], ' ');
-        input_size = atoi(dimensions_str[0]);
+        input_size = atol(dimensions_str[0]);
 
         if (layer_id > 0) assert(output_size == input_size);
         layer_input_size[layer_id] = input_size;
 
-        output_size = atoi(dimensions_str[1]);
+        output_size = atol(dimensions_str[1]);
 
-        assert(substring_count(dimensions_and_floats_str[1], ' ') ==
-               ((input_size + 1) * output_size));
-        char** floats_str = split(dimensions_and_floats_str[1], ' ');
+        assert(substring_count(layers_data[layer_id], '\n') ==
+               (output_size + 2));
+
         layer_float_data[layer_id] =
             malloc(sizeof(float) * ((input_size + 1) * output_size));
-
-        for (uint32_t i = 0; i < (input_size + 1) * output_size; ++i)
-            layer_float_data[layer_id][i] = atof(floats_str[i]);
+        char** floats_str;
+        for (uint32_t line = 1; line < (output_size + 2); ++line) {
+            if (line != (output_size + 1)) {
+                assert(substring_count(dimensions_and_floats_str[line], ' ') ==
+                       input_size);
+                floats_str = split(dimensions_and_floats_str[line], ' ');
+                for (uint32_t i = 0; i < input_size; ++i)
+                    layer_float_data[layer_id][((line - 1) * input_size) + i] =
+                        atof(floats_str[i]);
+                delete_list_of_blocks(input_size, floats_str);
+            } else {
+                assert(substring_count(dimensions_and_floats_str[line], ' ') ==
+                       output_size);
+                floats_str = split(dimensions_and_floats_str[line], ' ');
+                for (uint32_t i = 0; i < output_size; ++i)
+                    layer_float_data[layer_id][((line - 1) * input_size) + i] =
+                        atof(floats_str[i]);
+                delete_list_of_blocks(output_size, floats_str);
+            }
+        }
 
         // freeing memory
-        delete_list_of_blocks(2, dimensions_and_floats_str);
         delete_list_of_blocks(2, dimensions_str);
-        delete_list_of_blocks((input_size + 1) * output_size, floats_str);
+        delete_list_of_blocks(2, dimensions_and_floats_str);
     }
 
     struct VectorTransformBlock vtb =
