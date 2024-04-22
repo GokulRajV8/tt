@@ -38,7 +38,7 @@ void vect_copy(struct Vector* vsrc, struct Vector* vdest) {
 void vect_print(struct Vector* v, char* name) {
     fprintf(stdout, "\n%s :\n", name);
     for (uint32_t rid = 0; rid < v->rows; ++rid)
-        fprintf(stdout, "| %9.3f |\n", *vect_get(v, rid));
+        fprintf(stdout, "| %9.6f |\n", *vect_get(v, rid));
     fprintf(stdout, "\n");
 }
 

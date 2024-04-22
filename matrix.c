@@ -43,7 +43,7 @@ void matx_print(struct Matrix* m, char* name) {
     for (uint32_t rid = 0; rid < m->rows; ++rid) {
         fprintf(stdout, "|");
         for (uint32_t cid = 0; cid < m->columns; ++cid)
-            fprintf(stdout, " %9.3f", *matx_get(m, rid, cid));
+            fprintf(stdout, " %9.6f", *matx_get(m, rid, cid));
         fprintf(stdout, " |\n");
     }
     fprintf(stdout, "\n");
