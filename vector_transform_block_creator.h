@@ -1,8 +1,7 @@
 #ifndef VECTOR_TRANSFORM_BLOCK_CREATOR_H_
 #define VECTOR_TRANSFORM_BLOCK_CREATOR_H_
 
-#include <assert.h>
-
+#include "common.h"
 #include "vector_transform_block.h"
 
 /*

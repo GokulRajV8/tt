@@ -1,3 +1,4 @@
+#include "common.h"
 #include "tt.h"
 
 int main() {

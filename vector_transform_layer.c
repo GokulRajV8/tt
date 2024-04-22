@@ -1,5 +1,7 @@
 #include "vector_transform_layer.h"
 
+// static methods
+
 static void vect_bound_check(struct Vector* v) {
     for (uint32_t i = 0; i < v->rows; ++i)
         if (v->values[i] > 1.0f)

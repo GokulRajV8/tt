@@ -1,10 +1,7 @@
 #ifndef VECTOR_H_
 #define VECTOR_H_
 
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "common.h"
 
 /*
  * data types

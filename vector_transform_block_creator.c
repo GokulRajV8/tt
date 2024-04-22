@@ -1,5 +1,7 @@
 #include "vector_transform_block_creator.h"
 
+// static methods
+
 static uint32_t substring_count(char* input_str, char delimiter) {
     uint32_t substring_count = 1;
     for (char* cursor = input_str; *cursor != '\0'; ++cursor)
@@ -38,6 +40,8 @@ static void delete_list_of_blocks(uint32_t block_count, void** list_of_blocks) {
         free(*(list_of_blocks + block_id));
     free(list_of_blocks);
 }
+
+// methods
 
 struct VectorTransformBlock vtb_create(uint32_t layers_count,
                                        char** layers_data) {

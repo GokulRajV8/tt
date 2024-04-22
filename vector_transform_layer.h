@@ -1,8 +1,7 @@
 #ifndef VECTOR_TRANSFORM_LAYER_H_
 #define VECTOR_TRANSFORM_LAYER_H_
 
-#include <stdint.h>
-
+#include "common.h"
 #include "matrix.h"
 #include "vector.h"
 

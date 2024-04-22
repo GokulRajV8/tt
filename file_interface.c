@@ -1,5 +1,7 @@
 #include "file_interface.h"
 
+// static methods
+
 static uint32_t get_output_size(char* dimensions_line) {
     uint32_t index = 0;
     while (dimensions_line[index] != ' ') ++index;
@@ -24,6 +26,8 @@ static char* concat_with_newline(char* str1, char* str2) {
 
     return str_temp;
 }
+
+// methods
 
 struct VTBFileData vtb_read(FILE* f) {
     struct VTBFileData vtb_file_data;

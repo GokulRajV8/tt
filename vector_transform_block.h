@@ -1,8 +1,8 @@
 #ifndef VECTOR_TRANSFORM_BLOCK_H_
 #define VECTOR_TRANSFORM_BLOCK_H_
 
-#include <stdint.h>
-
+#include "common.h"
+#include "vector.h"
 #include "vector_transform_layer.h"
 
 /*

@@ -1,9 +1,7 @@
 #ifndef MATRIX_H_
 #define MATRIX_H_
 
-#include <stdint.h>
-#include <stdio.h>
-
+#include "common.h"
 #include "vector.h"
 
 /*
