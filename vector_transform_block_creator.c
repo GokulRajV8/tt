@@ -37,7 +37,7 @@ static char** split(char* input_str, char delimiter) {
 
 static void delete_list_of_blocks(uint32_t block_count, void** list_of_blocks) {
     for (uint32_t block_id = 0; block_id < block_count; ++block_id)
-        free(*(list_of_blocks + block_id));
+        free(list_of_blocks[block_id]);
     free(list_of_blocks);
 }
 
@@ -98,6 +98,40 @@ struct VectorTransformBlock vtb_create(uint32_t layers_count,
 
     // freeing memory
     free(layer_input_size);
+    delete_list_of_blocks(layers_count, layer_float_data);
+
+    return vtb;
+}
+
+struct VectorTransformBlock avg_vtb_create(uint32_t layers_count,
+                                           uint32_t* input_sizes,
+                                           uint32_t output_size) {
+    float** layer_float_data = malloc(sizeof(float*) * layers_count);
+
+    uint32_t layer_input_size, layer_output_size;
+    for (uint32_t layer_id = 0; layer_id < layers_count; ++layer_id) {
+        layer_input_size = input_sizes[layer_id];
+        if (layer_id != layers_count - 1)
+            layer_output_size = input_sizes[layer_id + 1];
+        else
+            layer_output_size = output_size;
+
+        layer_float_data[layer_id] = malloc(
+            sizeof(float) * ((layer_input_size + 1) * layer_output_size));
+
+        // setting weights
+        for (uint32_t i = 0; i < (layer_input_size * layer_output_size); ++i)
+            layer_float_data[layer_id][i] = 1.0f / layer_input_size;
+
+        // setting biases
+        for (uint32_t i = 0; i < layer_output_size; ++i)
+            layer_float_data[layer_id]
+                            [layer_input_size * layer_output_size + i] = 0.0f;
+    }
+
+    struct VectorTransformBlock vtb =
+        vtb_init(layers_count, input_sizes, output_size, layer_float_data);
+
     delete_list_of_blocks(layers_count, layer_float_data);
 
     return vtb;

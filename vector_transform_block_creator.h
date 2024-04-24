@@ -10,5 +10,8 @@
 
 struct VectorTransformBlock vtb_create(uint32_t layers_count,
                                        char** layers_data);
+struct VectorTransformBlock avg_vtb_create(uint32_t layers_count,
+                                           uint32_t* input_sizes,
+                                           uint32_t output_size);
 
 #endif

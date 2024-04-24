@@ -4,27 +4,10 @@
 int main() {
     int result;
 
-    // creating VTB file
-    FILE* vtb_file_to_write = fopen("test\\avg_vtb1.txt", "w");
-    assert(vtb_file_to_write != NULL);
-
-    uint32_t input_sizes[5] = {12, 20, 40, 40, 20};
-    avg_vtb_creator(vtb_file_to_write, 5, input_sizes, 12);
-    fprintf(stdout, "\nVTB file created successfully");
-    fclose(vtb_file_to_write);
-
-    // reading vtb file
-    FILE* vtb_file = fopen("test\\avg_vtb1.txt", "r");
-    assert(vtb_file != NULL);
-    struct VTBFileData vtb_file_data = vtb_read(vtb_file);
-    fprintf(stdout, "\nVTB file read");
-    fclose(vtb_file);
-
     // creating vtb
-    struct VectorTransformBlock vtb =
-        vtb_create(vtb_file_data.layers_count, vtb_file_data.layers_data);
-    fprintf(stdout, "\nVTB created");
-    vtb_file_data_delete(&vtb_file_data);
+    uint32_t input_sizes[8] = {10, 60, 40, 50, 30, 20, 50, 60};
+    struct VectorTransformBlock vtb = avg_vtb_create(8, input_sizes, 30);
+    fprintf(stdout, "VTB created");
 
     // creating vin
     uint32_t input_size = vtb.layers[0].in_size;
@@ -37,7 +20,7 @@ int main() {
     vect_print(&vin, "vin");
 
     // creating vout
-    struct Vector vout = vect_init_bare(12);
+    struct Vector vout = vect_init_bare(30);
 
     // transforming and result display
     result = vtb_transform(&vtb, &vin, &vout);
@@ -45,6 +28,13 @@ int main() {
         vect_print(&vout, "vtb(vin)");
     else
         fprintf(stdout, "\nTransformation failed");
+
+    // dumping vtb created
+    FILE* vtb_file_to_write = fopen("test\\avg_vtb1.txt", "w");
+    assert(vtb_file_to_write != NULL);
+    vtb_dump(vtb_file_to_write, &vtb);
+    fprintf(stdout, "\nVTB file created successfully");
+    fclose(vtb_file_to_write);
 
     // deletion
     vtb_delete(&vtb);
