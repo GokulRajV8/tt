@@ -20,7 +20,7 @@ struct Vector vect_init_bare(uint32_t rows);
 struct Vector vect_init_data(uint32_t rows, float* data);
 void vect_delete(struct Vector* v);
 
-inline float* vect_get(struct Vector* v, uint32_t rid);
+float* vect_get(struct Vector* v, uint32_t rid);
 void vect_resize(struct Vector* v, uint32_t rows);
 void vect_copy(struct Vector* vsrc, struct Vector* vdest);
 void vect_print(struct Vector* v, char* name);

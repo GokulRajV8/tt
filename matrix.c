@@ -22,7 +22,7 @@ void matx_delete(struct Matrix* m) { free(m->values); }
 
 // methods
 
-inline float* matx_get(struct Matrix* m, uint32_t rid, uint32_t cid) {
+float* matx_get(struct Matrix* m, uint32_t rid, uint32_t cid) {
     return (m->values + (rid * m->columns) + cid);
 }
 

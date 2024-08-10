@@ -21,9 +21,7 @@ void vect_delete(struct Vector* v) { free(v->values); }
 
 // methods
 
-inline float* vect_get(struct Vector* v, uint32_t rid) {
-    return v->values + rid;
-}
+float* vect_get(struct Vector* v, uint32_t rid) { return v->values + rid; }
 
 void vect_resize(struct Vector* v, uint32_t rows) {
     v->rows = rows;

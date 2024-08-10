@@ -14,7 +14,7 @@ int main() {
     float* vin_values = malloc(sizeof(float) * input_size);
     fprintf(stdout, "\nEnter %d values :\n", input_size);
     for (uint32_t i = 0; i < input_size; ++i)
-        fscanf(stdin, "%f", vin_values + i);
+        fscanf_s(stdin, "%f", vin_values + i);
     struct Vector vin = vect_init_data(input_size, vin_values);
     free(vin_values);
     vect_print(&vin, "vin");
@@ -30,7 +30,8 @@ int main() {
         fprintf(stdout, "\nTransformation failed");
 
     // dumping vtb created
-    FILE* vtb_file_to_write = fopen("test\\avg_vtb1.txt", "w");
+    FILE* vtb_file_to_write;
+    fopen_s(&vtb_file_to_write, "avg_vtb1.txt", "w");
     assert(vtb_file_to_write != NULL);
     vtb_dump(vtb_file_to_write, &vtb);
     fprintf(stdout, "\nVTB file created successfully");
