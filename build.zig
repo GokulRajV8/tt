@@ -10,15 +10,18 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     test_executable.linkLibC();
-    test_executable.addCSourceFiles(.{ .files = &.{
-        "vector.c",
-        "matrix.c",
-        "vector_transform_layer.c",
-        "vector_transform_block.c",
-        "vector_transform_block_creator.c",
-        "file_interface.c",
-        "test.c",
-    }, .flags = &.{"-std=c99"} });
+    test_executable.addCSourceFiles(.{
+        .files = &.{
+            "vector.c",
+            "matrix.c",
+            "vector_transform_layer.c",
+            "vector_transform_block.c",
+            "vector_transform_block_creator.c",
+            "file_interface.c",
+            "test.c",
+        },
+        .flags = &.{"-std=c99"},
+    });
 
     b.installArtifact(test_executable);
 }
