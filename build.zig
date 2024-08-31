@@ -1,13 +1,10 @@
 const std = @import("std");
 
 pub fn build(b: *std.Build) void {
-    const target = b.standardTargetOptions(.{});
-    const optimize = b.standardOptimizeOption(.{});
-
     const test_executable = b.addExecutable(.{
         .name = "test",
-        .target = target,
-        .optimize = optimize,
+        .target = b.standardTargetOptions(.{}),
+        .optimize = b.standardOptimizeOption(.{}),
     });
     test_executable.linkLibC();
     test_executable.addCSourceFiles(.{
