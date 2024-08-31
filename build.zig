@@ -9,13 +9,13 @@ pub fn build(b: *std.Build) void {
     test_executable.linkLibC();
     test_executable.addCSourceFiles(.{
         .files = &.{
-            "vector.c",
-            "matrix.c",
-            "vector_transform_layer.c",
-            "vector_transform_block.c",
-            "vector_transform_block_creator.c",
-            "file_interface.c",
-            "test.c",
+            "src/vector.c",
+            "src/matrix.c",
+            "src/vector_transform_layer.c",
+            "src/vector_transform_block.c",
+            "src/vector_transform_block_creator.c",
+            "src/file_interface.c",
+            "src/test.c",
         },
         .flags = &.{"-std=c99"},
     });
