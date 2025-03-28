@@ -18,15 +18,18 @@ static void populate_tt_block(struct TTBlock* b) {
 }
 
 static void test1() {
+    unsigned int layers_count = 5;
     unsigned int* layer_input_sizes =
-        (unsigned int*)malloc(sizeof(unsigned int) * 5);
+        (unsigned int*)malloc(sizeof(unsigned int) * layers_count);
     layer_input_sizes[0] = 10;
     layer_input_sizes[1] = 100;
     layer_input_sizes[2] = 200;
     layer_input_sizes[3] = 200;
     layer_input_sizes[4] = 50;
+    unsigned int output_size = 10;
 
-    struct TTBlock b = tt_block_init(5, layer_input_sizes, 10);
+    struct TTBlock b =
+        tt_block_init(layers_count, layer_input_sizes, output_size);
     free(layer_input_sizes);
 
     populate_tt_block(&b);
@@ -42,16 +45,14 @@ static void test1() {
 static void test2() {
     struct TTBlock b = tt_file2block("blk_test");
 
-    struct TTVector vin = tt_vector_init(b.layers[0].in_size);
-    for (unsigned int i = 0; i < b.layers[0].in_size; ++i) {
+    struct TTVector vin = tt_vector_init(tt_block_get_in_size(&b));
+    struct TTVector vout = tt_vector_init(tt_block_get_out_size(&b));
+    for (unsigned int i = 0; i < vin.rows; ++i) {
         fprintf(stdout, "Enter the value of input at row %d : ", i);
         fscanf(stdin, "%f", vin.data + i);
     }
 
-    struct TTVector vout =
-        tt_vector_init(b.layers[b.layers_count - 1].out_size);
     int result = tt_block_transform(&b, &vin, &vout);
-
     if (result == 0)
         for (unsigned int i = 0; i < vout.rows; ++i)
             fprintf(stdout, "%f\n", vout.data[i]);

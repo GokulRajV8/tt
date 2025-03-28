@@ -34,6 +34,14 @@ void tt_block_delete(struct TTBlock* b) {
     free(b->layers);
 }
 
+unsigned int tt_block_get_in_size(struct TTBlock* b) {
+    return b->layers[0].in_size;
+}
+
+unsigned int tt_block_get_out_size(struct TTBlock* b) {
+    return b->layers[b->layers_count - 1].out_size;
+}
+
 int tt_block_transform(struct TTBlock* b, struct TTVector* vin,
                        struct TTVector* vout) {
     // checking input and output dimensions

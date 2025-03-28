@@ -25,6 +25,9 @@ struct TTBlock tt_block_init(unsigned int layers_count,
                              unsigned int output_size);
 void tt_block_delete(struct TTBlock* b);
 
+unsigned int tt_block_get_in_size(struct TTBlock* b);
+unsigned int tt_block_get_out_size(struct TTBlock* b);
+
 int tt_block_transform(struct TTBlock* b, struct TTVector* vin,
                        struct TTVector* vout);
 
