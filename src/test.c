@@ -64,6 +64,7 @@ static void test2() {
         perror("Calculations failed");
 
     tt_vector_delete(&vout);
+    tt_vector_delete(&vin);
     tt_block_delete(&b);
 }
 
