@@ -19,10 +19,10 @@ int tt_block2file(struct TTBlock* b, char* file) {
     // writing weights and biases data
     layer_id = 0;
     for (; layer_id < b->layers_count; ++layer_id) {
-        fwrite(b->layers[layer_id].weights.data, sizeof(float),
-               b->layers[layer_id].in_size * b->layers[layer_id].out_size, f);
-        fwrite(b->layers[layer_id].bias.data, sizeof(float),
-               b->layers[layer_id].out_size, f);
+        struct TTLayer curr_layer = b->layers[layer_id];
+        fwrite(curr_layer.weights.data, sizeof(float),
+               curr_layer.in_size * curr_layer.out_size, f);
+        fwrite(curr_layer.bias.data, sizeof(float), curr_layer.out_size, f);
     }
 
     fclose(f);

@@ -15,14 +15,15 @@ struct TTBlock tt_block_init(unsigned int layers_count,
     b.layers = malloc(sizeof(struct TTLayer) * layers_count);
 
     for (unsigned int layer_id = 0; layer_id < layers_count; ++layer_id) {
-        b.layers[layer_id].in_size = layer_input_sizes[layer_id];
-        b.layers[layer_id].out_size = (layer_id < layers_count - 1)
-                                          ? layer_input_sizes[layer_id + 1]
-                                          : output_size;
+        struct TTLayer* curr_layer = &b.layers[layer_id];
+        curr_layer->in_size = layer_input_sizes[layer_id];
+        curr_layer->out_size = (layer_id < layers_count - 1)
+                                   ? layer_input_sizes[layer_id + 1]
+                                   : output_size;
 
-        b.layers[layer_id].weights = matrix_init(b.layers[layer_id].out_size,
-                                                 b.layers[layer_id].in_size);
-        b.layers[layer_id].bias = tt_vector_init(b.layers[layer_id].out_size);
+        curr_layer->weights =
+            matrix_init(curr_layer->out_size, curr_layer->in_size);
+        curr_layer->bias = tt_vector_init(curr_layer->out_size);
     }
 
     return b;
@@ -32,8 +33,9 @@ void tt_block_delete(struct TTBlock* b) {
     if (!b->is_empty) {
         for (unsigned int layer_id = 0; layer_id < b->layers_count;
              ++layer_id) {
-            matrix_delete(&b->layers[layer_id].weights);
-            tt_vector_delete(&b->layers[layer_id].bias);
+            struct TTLayer curr_layer = b->layers[layer_id];
+            matrix_delete(&curr_layer.weights);
+            tt_vector_delete(&curr_layer.bias);
         }
         free(b->layers);
         b->is_empty = true;
@@ -60,9 +62,11 @@ int tt_block_transform(struct TTBlock* b, struct TTVector* vin,
     memcpy(temp_vector.data, vin->data, sizeof(float) * vin->rows);
 
     for (unsigned int layer_id = 0; layer_id < b->layers_count; ++layer_id) {
+        struct TTLayer curr_layer = b->layers[layer_id];
+
         // calculating transform of temp_vector and storing in vout
-        vector_resize(vout, b->layers[layer_id].out_size);
-        layer_transform(&b->layers[layer_id], &temp_vector, vout);
+        vector_resize(vout, curr_layer.out_size);
+        layer_transform(&curr_layer, &temp_vector, vout);
 
         // copying vout into temp_vector
         vector_resize(&temp_vector, vout->rows);
