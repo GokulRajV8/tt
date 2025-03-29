@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <stdlib.h>
 
 #include "data.h"
@@ -7,7 +6,6 @@
 
 struct TTMatrix matrix_init(unsigned int rows, unsigned int cols) {
     struct TTMatrix m;
-    m.is_empty = false;
     m.rows = rows;
     m.cols = cols;
     m.data = malloc(sizeof(float) * m.rows * m.cols);
@@ -16,9 +14,9 @@ struct TTMatrix matrix_init(unsigned int rows, unsigned int cols) {
 }
 
 void matrix_delete(struct TTMatrix* m) {
-    if (!m->is_empty) {
+    if (m->data != NULL) {
         free(m->data);
-        m->is_empty = true;
+        m->data = NULL;
     }
 }
 

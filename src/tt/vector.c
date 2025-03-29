@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <stdlib.h>
 
 #include "data.h"
@@ -7,7 +6,6 @@
 
 struct TTVector tt_vector_init(unsigned int rows) {
     struct TTVector v;
-    v.is_empty = false;
     v.rows = rows;
     v.data = malloc(rows * sizeof(float));
 
@@ -15,9 +13,9 @@ struct TTVector tt_vector_init(unsigned int rows) {
 }
 
 void tt_vector_delete(struct TTVector* v) {
-    if (!v->is_empty) {
+    if (v->data != NULL) {
         free(v->data);
-        v->is_empty = true;
+        v->data = NULL;
     }
 }
 

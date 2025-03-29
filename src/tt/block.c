@@ -10,7 +10,6 @@ struct TTBlock tt_block_init(unsigned int layers_count,
                              unsigned int* layer_input_sizes,
                              unsigned int output_size) {
     struct TTBlock b;
-    b.is_empty = false;
     b.layers_count = layers_count;
     b.layers = malloc(sizeof(struct TTLayer) * layers_count);
 
@@ -30,7 +29,7 @@ struct TTBlock tt_block_init(unsigned int layers_count,
 }
 
 void tt_block_delete(struct TTBlock* b) {
-    if (!b->is_empty) {
+    if (b->layers != NULL) {
         for (unsigned int layer_id = 0; layer_id < b->layers_count;
              ++layer_id) {
             struct TTLayer curr_layer = b->layers[layer_id];
@@ -38,7 +37,7 @@ void tt_block_delete(struct TTBlock* b) {
             tt_vector_delete(&curr_layer.bias);
         }
         free(b->layers);
-        b->is_empty = true;
+        b->layers = NULL;
     }
 }
 

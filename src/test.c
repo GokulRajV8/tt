@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -41,7 +40,7 @@ static void test1() {
 }
 
 static void test2() {
-    struct TTBlock b = {.is_empty = true};
+    struct TTBlock b = {.layers = NULL};
 
     int result = tt_file2block(&b, "blk_test");
     if (result != 0) {
