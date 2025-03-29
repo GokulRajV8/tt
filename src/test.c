@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -34,16 +35,20 @@ static void test1() {
 
     populate_tt_block(&b);
     int result = tt_block2file(&b, "blk_test");
-    if (result == 0)
-        fprintf(stdout, "%s", "TT Block saved successfully");
-    else
-        fprintf(stdout, "%s", "TT Block save failed");
+    if (result != 0) perror("Unable to save to file");
 
     tt_block_delete(&b);
 }
 
 static void test2() {
-    struct TTBlock b = tt_file2block("blk_test");
+    struct TTBlock b;
+    b.is_empty = true;
+
+    int result = tt_file2block(&b, "blk_test");
+    if (result != 0) {
+        perror("Unable to read from file");
+        exit(1);
+    }
 
     struct TTVector vin = tt_vector_init(tt_block_get_in_size(&b));
     struct TTVector vout = tt_vector_init(tt_block_get_out_size(&b));
@@ -52,12 +57,12 @@ static void test2() {
         fscanf(stdin, "%f", vin.data + i);
     }
 
-    int result = tt_block_transform(&b, &vin, &vout);
+    result = tt_block_transform(&b, &vin, &vout);
     if (result == 0)
         for (unsigned int i = 0; i < vout.rows; ++i)
             fprintf(stdout, "%f\n", vout.data[i]);
     else
-        fprintf(stdout, "%s", "Calculations failed");
+        perror("Calculations failed");
 
     tt_vector_delete(&vout);
     tt_block_delete(&b);
@@ -75,7 +80,7 @@ int main() {
             test2();
             break;
         default:
-            fprintf(stdout, "%s", "Invalid option");
+            perror("Invalid option");
     }
 
     return 0;

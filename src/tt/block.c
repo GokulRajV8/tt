@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -9,6 +10,7 @@ struct TTBlock tt_block_init(unsigned int layers_count,
                              unsigned int* layer_input_sizes,
                              unsigned int output_size) {
     struct TTBlock b;
+    b.is_empty = false;
     b.layers_count = layers_count;
     b.layers = malloc(sizeof(struct TTLayer) * layers_count);
 
@@ -27,11 +29,15 @@ struct TTBlock tt_block_init(unsigned int layers_count,
 }
 
 void tt_block_delete(struct TTBlock* b) {
-    for (unsigned int layer_id = 0; layer_id < b->layers_count; ++layer_id) {
-        matrix_delete(&b->layers[layer_id].weights);
-        tt_vector_delete(&b->layers[layer_id].bias);
+    if (!b->is_empty) {
+        for (unsigned int layer_id = 0; layer_id < b->layers_count;
+             ++layer_id) {
+            matrix_delete(&b->layers[layer_id].weights);
+            tt_vector_delete(&b->layers[layer_id].bias);
+        }
+        free(b->layers);
+        b->is_empty = true;
     }
-    free(b->layers);
 }
 
 unsigned int tt_block_get_in_size(struct TTBlock* b) {

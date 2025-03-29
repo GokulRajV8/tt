@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdlib.h>
 
 #include "data.h"
@@ -6,13 +7,19 @@
 
 struct TTVector tt_vector_init(unsigned int rows) {
     struct TTVector v;
+    v.is_empty = false;
     v.rows = rows;
     v.data = malloc(rows * sizeof(float));
 
     return v;
 }
 
-void tt_vector_delete(struct TTVector* v) { free(v->data); }
+void tt_vector_delete(struct TTVector* v) {
+    if (!v->is_empty) {
+        free(v->data);
+        v->is_empty = true;
+    }
+}
 
 float* tt_vector_get_data(struct TTVector* v, unsigned int rid) {
     return v->data + rid;

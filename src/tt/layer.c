@@ -1,5 +1,3 @@
-#include <stdlib.h>
-
 #include "data.h"
 #include "functions.h"
 #include "ifunctions.h"
@@ -28,5 +26,5 @@ void layer_transform(struct TTLayer* l, struct TTVector* vin,
             *tt_vector_get_data(vout, rid) = -1.0f;
     }
 
-    free(prod_result.data);
+    tt_vector_delete(&prod_result);
 }

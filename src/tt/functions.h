@@ -34,6 +34,6 @@ int tt_block_transform(struct TTBlock* b, struct TTVector* vin,
 // File interface
 
 int tt_block2file(struct TTBlock* b, char* file);
-struct TTBlock tt_file2block(char* file);
+int tt_file2block(struct TTBlock* b, char* file);
 
 #endif
