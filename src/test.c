@@ -20,7 +20,7 @@ static void populate_tt_block(struct TTBlock* b) {
 static void test1() {
     unsigned int layers_count = 5;
     unsigned int* layer_input_sizes =
-        (unsigned int*)malloc(sizeof(unsigned int) * layers_count);
+        malloc(sizeof(unsigned int) * layers_count);
     layer_input_sizes[0] = 10;
     layer_input_sizes[1] = 100;
     layer_input_sizes[2] = 200;

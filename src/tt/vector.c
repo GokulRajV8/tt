@@ -7,7 +7,7 @@
 struct TTVector tt_vector_init(unsigned int rows) {
     struct TTVector v;
     v.rows = rows;
-    v.data = malloc(rows * sizeof(float));
+    v.data = malloc(sizeof(float) * rows);
 
     return v;
 }
