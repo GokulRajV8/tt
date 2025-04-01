@@ -22,7 +22,7 @@ void layer_transform(struct TTLayer* l, struct TTVector* vin,
     for (unsigned int rid = 0; rid < vout->rows; ++rid) {
         if (*tt_vector_get_data(vout, rid) > 1.0f)
             *tt_vector_get_data(vout, rid) = 1.0f;
-        else if (*tt_vector_get_data(vout, rid) < -1.0f)
+        if (*tt_vector_get_data(vout, rid) < -1.0f)
             *tt_vector_get_data(vout, rid) = -1.0f;
     }
 
