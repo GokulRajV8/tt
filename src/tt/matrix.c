@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "data.h"
@@ -34,4 +35,14 @@ void matrix_vector_prod(struct TTMatrix* min, struct TTVector* vin,
                 *matrix_get_data(min, rid, cid) * *tt_vector_get_data(vin, cid);
         *tt_vector_get_data(vout, rid) = val;
     }
+}
+
+void matrix_print(struct TTMatrix* m, char* name) {
+    fprintf(stdout, "%s :\n", name);
+    for (unsigned int rid = 0; rid < m->rows; ++rid) {
+        for (unsigned int cid = 0; cid < m->cols; ++cid)
+            fprintf(stdout, "%f ", *matrix_get_data(m, rid, cid));
+        fprintf(stdout, "\n");
+    }
+    fprintf(stdout, "\n");
 }

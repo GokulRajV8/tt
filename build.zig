@@ -14,6 +14,7 @@ pub fn build(b: *std.Build) void {
             "src/tt/layer.c",
             "src/tt/block.c",
             "src/tt/file_interface.c",
+            "src/tt/simple_bp.c",
             "src/test.c",
         },
         .flags = &.{"-std=c99"},

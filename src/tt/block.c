@@ -4,6 +4,7 @@
 
 #include "data.h"
 #include "functions.h"
+#include "idata.h"
 #include "ifunctions.h"
 
 struct TTBlock tt_block_init(unsigned int layers_count,
@@ -74,4 +75,43 @@ int tt_block_transform(struct TTBlock* b, struct TTVector* vin,
 
     tt_vector_delete(&temp_vector);
     return 0;
+}
+
+struct GranularLayerInput block_transform_granular(struct TTBlock* b,
+                                                   struct TTVector* vin,
+                                                   struct TTVector* vout) {
+    struct GranularLayerInput gli = {.was_successful = false, .inputs = NULL};
+
+    // checking input and output dimensions
+    if (b->layers[0].in_size != vin->rows ||
+        b->layers[b->layers_count - 1].out_size != vout->rows)
+        return gli;
+
+    unsigned int* input_sizes = malloc(sizeof(unsigned int) * b->layers_count);
+    for (unsigned int i = 0; i < b->layers_count; ++i)
+        input_sizes[i] = b->layers[i].in_size;
+    gli.inputs = vector_list_init(b->layers_count, input_sizes);
+    free(input_sizes);
+
+    unsigned int curr_layer_id = 0;
+
+    // copying vin into first layer input vector
+    memcpy(gli.inputs[curr_layer_id].data, vin->data,
+           sizeof(float) * vin->rows);
+
+    for (; curr_layer_id < b->layers_count;) {
+        struct TTLayer curr_layer = b->layers[curr_layer_id];
+
+        // calculating transform of curr_layer input and storing in vout
+        vector_resize(vout, curr_layer.out_size);
+        layer_transform(&curr_layer, gli.inputs + curr_layer_id, vout);
+
+        // copying vout into next layer input if present
+        if (++curr_layer_id < b->layers_count)
+            memcpy(gli.inputs[curr_layer_id].data, vout->data,
+                   sizeof(float) * vout->rows);
+    }
+
+    gli.was_successful = true;
+    return gli;
 }

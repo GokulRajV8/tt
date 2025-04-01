@@ -36,4 +36,10 @@ int tt_block_transform(struct TTBlock* b, struct TTVector* vin,
 int tt_block2file(struct TTBlock* b, char* file);
 int tt_file2block(struct TTBlock* b, char* file);
 
+// Simple Back propagation
+
+int tt_sbp_error_propagate(struct TTBlock* b, struct TTVector* vin,
+                           struct TTVector* vexp,
+                           float max_change_in_error_squared);
+
 #endif
